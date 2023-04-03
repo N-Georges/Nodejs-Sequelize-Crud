@@ -1,16 +1,24 @@
 require("dotenv").config();
 const { Sequelize } = require("sequelize");
 
-const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, ENDPOINT_ID } = process.env;
-const URL = `postgres://${PGUSER}:${PGPASSWORD}@${PGHOST}/${PGDATABASE}?options=project%3D${ENDPOINT_ID}`;
+const { PG_URL } = process.env;
 
-const sequelize = new Sequelize(URL, {
+const db = new Sequelize(`${PG_URL}`, {
   dialect: "postgres",
   dialectOptions: {
     ssl: {
       require: true,
+      rejectUnauthorized: false,
     },
   },
 });
 
-module.exports = sequelize;
+db.authenticate()
+  .then(() => {
+    console.log(`Connection has been established successfully. \u2705`);
+  })
+  .catch((error) => {
+    console.error(`Unable to connect to the database:, ${error} \u274C`);
+  });
+
+module.exports = db;

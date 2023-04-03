@@ -15,4 +15,6 @@ const postSchema = sequelize.define("Post", {
   },
 });
 
+postSchema.sync();
+
 module.exports = postSchema;

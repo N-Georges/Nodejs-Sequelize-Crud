@@ -1,48 +1,24 @@
 const express = require("express");
+const {
+  setPosts,
+  getPosts,
+  editPost,
+  deletePost,
+  likePost,
+  dislikePost,
+} = require("../controllers/post.controller");
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.json({ message: "Welcome to the post page" });
-});
+router.get("/", getPosts);
 
-router.post("/", (req, res) => {
-  res.json({
-    message: req.body.message,
-  });
-});
+router.post("/", setPosts);
 
-router.put("/:id", (req, res) => {
-  console.log(
-    `Post with id ${req.params.id} updated with message: ${req.body.message}`
-  );
-  res.json({
-    message: "Post updated",
-    id: req.params.id,
-  });
-});
+router.put("/:id", editPost);
 
-router.delete("/:id", (req, res) => {
-  console.log(`Post with id ${req.params.id} deleted`);
-  res.json({
-    message: "Post deleted",
-    id: req.params.id,
-  });
-});
+router.delete("/:id", deletePost);
 
-router.patch("/like/:id", (req, res) => {
-  console.log(`Post with id ${req.params.id} liked`);
-  res.json({
-    message: "Post liked",
-    id: req.params.id,
-  });
-});
+router.patch("/like/:id", likePost);
 
-router.patch("/dislike/:id", (req, res) => {
-  console.log(`Post with id ${req.params.id} disliked`);
-  res.json({
-    message: "Post disliked",
-    id: req.params.id,
-  });
-});
+router.patch("/dislike/:id", dislikePost);
 
 module.exports = router;
